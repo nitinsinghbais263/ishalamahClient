@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+
+  </head>
+  <body>
+    <h1>Heello</h1>
+    <form
+        class="paymentWidgets"
+        data-brands="VISA MASTER AMEX"
+    />
+
+  </body>
+  <script src="https://test.oppwa.com/v1/paymentWidgets.js?checkoutId=EE9A9F132B83C6D8FC388863C05A9284.uat01-vm-tx03"></script>
+  <script src='https://code.jquery.com/jquery.js'></script>
+  <script>
+     var wpwlOptions = {
+          style:"card",
+          onReady: function(e){
+            $('.wpwl-form-card').find('.wpwl-button-pay').on('click', function(e){
+              validateHolder(e);
+            });
+          },
+          onBeforeSubmitCard: function(e){
+            return validateHolder(e);
+          }
+        }
+        function validateHolder(e){
+          var holder = $('.wpwl-control-cardHolder').val();
+          if (holder.trim().length < 2){
+            $('.wpwl-control-cardHolder').addClass('wpwl-has-error').after('<div class="wpwl-hint wpwl-hint-cardHolderError">Invalid card holder</div>');
+            return false;
+          }
+          return true;
+      }
+  </script>
+</html>
+
+
+
+
+
+
+<!-- import React, { Component } from 'react';
+import { Platform, StyleSheet, Text, View, TextInput, Button, Alert, DeviceEventEmitter } from 'react-native';
+import axios from 'axios';
+import HyperpayBridge from './HyperpayBridge';
+import { NativeModules, NativeEventEmitter } from 'react-native';
+import { WebView } from 'react-native-webview';
+
+const hyperpay = NativeModules.Hyperpay;
+
+const instructions = Platform.select({
+	ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
+	android: 'Double tap R on your keyboard to reload,\n' + 'Shake or press menu button for dev menu'
+});
+
+export default class Payment extends Component {
+	state = {
+		checkoutId: '',
+		cardNumber: '4111111111111111',
+		cvv: '123',
+		expiryMonth: '05',
+		expirYear: '2021',
+		cardHolder: 'hussamadin',
+		txStatus: 'pending'
+	};
+	componentDidMount() {
+		axios({
+			method: 'post',
+			url: `https://staging.farsi.core.dgera.com/api/v1/initiate-transaction`,
+			headers: {}
+		}).then((response) => {
+
+			const checkoutId = response.data.id;
+			console.log("checkout: ",checkoutId)
+			this.setState({ checkoutId: checkoutId });
+		});
+
+
+
+		const nativeEventListener = DeviceEventEmitter.addListener('transactionStatus', (e) => {
+
+			//this.setState({ txStatus: e.status });
+			console.log("URL: ", e);
+			//REdirect to 3dSecure
+			<WebView source={{ uri: e.redirectUrl }} />;
+			console.log("status : ",e.status);
+		});
+	}
+
+	async _onPressButton() {
+		// Alert.alert('checkout', this.state.cardHolder);
+		const paymentParams = {
+			checkoutID: this.state.checkoutId,
+			paymentBrand: 'VISA',
+			cardNumber: this.state.cardNumber,
+			holderName: this.state.cardHolder,
+			expiryMonth: this.state.expiryMonth,
+			expiryYear: this.state.expirYear,
+			cvv: this.state.cvv
+		};
+
+		NativeModules.Hyperpay.transactionPayment(paymentParams);
+
+
+		// axios({
+		// 	method: 'get',
+		// 	url: `https://staging.farsi.core.dgera.com/api/v1/complete-transaction-mobile?id=${this.state.checkoutId}`,
+		// 	headers: {}
+		// }).then((response) => {
+		// 	const checkoutId = response.data.id;
+		// 	console.log("checkout: ",checkoutId)
+		// 	this.setState({ checkoutId: checkoutId });
+		// });
+
+
+		NativeModules.Hyperpay.sayHI();
+	}
+
+	render() {
+		return (
+
+      	<WebView
+        style={{justifyContent: 'center',
+                alignItems: 'center',
+                flex: 1,
+                marginTop: 30,
+                backgroundColor:"red"
+              }}
+          source={require('./payment.html')}
+          javaScriptEnabled={true}
+          domStorageEnabled={true}
+          />
+
+
+		);
+	}
+}
+
+const styles = StyleSheet.create({
+	container: {
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center',
+		backgroundColor: '#F5FCFF'
+	},
+	welcome: {
+		fontSize: 20,
+		textAlign: 'center',
+		margin: 10
+	},
+	instructions: {
+		textAlign: 'center',
+		color: '#333333',
+		marginBottom: 5
+	}
+});
+ -->
